@@ -25,11 +25,11 @@ services:
           type: redis
           name: sidekiq-redis
           property: connectionString
-          
+
   - type: web
     name: routealert
     env: ruby
-    buildCommand: "./bin/render-build.sh"
+    buildCommand: "bin/render-build.sh"
     startCommand: "bundle exec puma -C config/puma.rb"
     envVars:
       - key: DATABASE_URL
