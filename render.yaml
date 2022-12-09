@@ -1,0 +1,40 @@
+databases:
+  - name: routealert
+    databaseName: routealert
+    user: routealert
+
+services:
+    # Create a redis instance
+  - type: redis
+    name: sidekiq-redis
+    region: ohio
+    maxmemoryPolicy: noeviction
+    ipAllowList: []
+
+  # Let's create our background worker
+  - type: worker
+    name: sidekiq-worker
+    env: ruby
+    region: ohio
+    buildCommand: bundle install
+    startCommand: bundle exec sidekiq -r ./main.rb
+    autoDeploy: false
+    envVars:
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: sidekiq-redis
+          property: connectionString
+          
+  - type: web
+    name: routealert
+    env: ruby
+    buildCommand: "./bin/render-build.sh"
+    startCommand: "bundle exec puma -C config/puma.rb"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: routealert
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
