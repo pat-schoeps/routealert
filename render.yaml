@@ -30,7 +30,7 @@ services:
   - type: web
     name: routealert
     env: ruby
-    buildCommand: 
+    buildCommand: bundle install
     startCommand: "bundle exec puma -C config/puma.rb"
     envVars:
       - key: DATABASE_URL
