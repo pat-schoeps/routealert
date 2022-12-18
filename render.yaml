@@ -1,7 +1,8 @@
 databases:
-  - name: routealert
-    databaseName: routealert
-    user: routealert
+  - name: routealertdb
+    databaseName: routealertdb
+    user: routealertdb
+    plan: free
 
 services:
     # Create a redis instance
@@ -29,7 +30,7 @@ services:
   - type: web
     name: routealert
     env: ruby
-    buildCommand: "./render-build.sh"
+    buildCommand: 
     startCommand: "bundle exec puma -C config/puma.rb"
     envVars:
       - key: DATABASE_URL
