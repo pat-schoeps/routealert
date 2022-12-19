@@ -15,26 +15,24 @@ services:
     ipAllowList: []
 
   # Let's create our background worker
-  - type: worker
-    name: sidekiq-worker
-    env: ruby
-    region: oregon
-    plan: free
-    buildCommand: bundle install
-    startCommand: bundle exec sidekiq
-    autoDeploy: false
-    envVars:
-      - key: REDIS_URL
-        fromService:
-          type: redis
-          name: sidekiq-redis
-          property: connectionString
+  #- type: worker
+  #  name: sidekiq-worker
+  #  env: ruby
+  #  region: oregon
+  #  buildCommand: bundle install
+  #  startCommand: bundle exec sidekiq
+  #  autoDeploy: false
+  #  envVars:
+  #    - key: REDIS_URL
+  #      fromService:
+  #        type: redis
+  #        name: sidekiq-redis
+  #        property: connectionString
 
   - type: web
     name: routealert
     env: ruby
     region: oregon
-    plan: free
     buildCommand: "./render-build.sh"
     startCommand: "bundle exec puma -C config/puma.rb"
     envVars:
