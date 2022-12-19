@@ -9,10 +9,10 @@ class CheckForAlertJob < ApplicationJob
 
     dur = 45
     if dur > route.travel_time
-      puts "send alert"
+      MessageSender.send_message("2488049593", "Your gonna be laaaaaaate")
     end
 
-    
+
   end
 
 end

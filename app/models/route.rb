@@ -1,5 +1,20 @@
 class Route < ApplicationRecord
 
+  def self.test
+    route = Route.create(                                                                                                         
+      sa_h: 8,                                                      
+      sa_m: 0,                                                      
+      travel_time: 10,                                               
+      days: [1,2,3,4,5,6,7],                                                       
+      time_zone: "America/Los Angeles",                                                 
+    )
+    route.save
+    route.set_schedule_id
+    #route.schedule_alerts
+
+    CheckForAlertJob.perform_later(route.id, route.schedule_id)
+  end
+
   def schedule_alerts
     if !schedule_id
       self.set_schedule_id
